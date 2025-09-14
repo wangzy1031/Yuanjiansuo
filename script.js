@@ -1,6 +1,6 @@
 // 1. 配置 Algolia（替换为你的 Algolia 信息！）
-const ALGOLIA_APP_ID = "P2QTVOYGBQ"; // 如：K2QXXXXXX
-const ALGOLIA_SEARCH_KEY = "492212ffa188f42142eb2ec040c0d0ee"; // 如：a1b2c3d4e5f6XXXX
+const ALGOLIA_APP_ID = "RZOWXGOWIK"; // 如：K2QXXXXXX
+const ALGOLIA_SEARCH_KEY = "810cb27d5df9d22cd078aa808c8b5b18"; // 如：a1b2c3d4e5f6XXXX
 const ALGOLIA_INDEX_NAME = "yuanjiansuo"; // 你创建的 Index 名称
 
 // 初始化 Algolia 客户端
