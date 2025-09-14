@@ -1,0 +1,38 @@
+[
+  {
+    "type": "software",
+    "name": "Google Chrome",
+    "url": "https://www.google.com/chrome/",
+    "intro": "快速、安全的跨平台浏览器，支持多标签页和扩展插件"
+  },
+  {
+    "type": "software",
+    "name": "Visual Studio Code",
+    "url": "https://code.visualstudio.com/",
+    "intro": "免费开源的代码编辑器，支持语法高亮和多语言开发"
+  },
+  {
+    "type": "software",
+    "name": "微信电脑版",
+    "url": "https://pc.weixin.qq.com/",
+    "intro": "微信官方电脑客户端，支持消息同步和文件传输"
+  },
+  {
+    "type": "tool",
+    "name": "Canva 可画",
+    "url": "https://www.canva.com/zh_cn/",
+    "intro": "在线设计工具，提供海报、PPT等模板，拖拽即可制作"
+  },
+  {
+    "type": "tool",
+    "name": "Notion",
+    "url": "https://www.notion.so/zh-cn/",
+    "intro": "多功能笔记工具，支持文档、表格和团队协作"
+  },
+  {
+    "type": "tool",
+    "name": "TinyPNG",
+    "url": "https://tinypng.com/",
+    "intro": "免费图片压缩工具，减少文件体积且保持画质"
+  }
+]
