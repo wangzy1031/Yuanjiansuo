@@ -2,7 +2,7 @@
 const CONFIG = {
   // 方案1：新版 GitHub 原始文件链接（推荐优先尝试，注意仓库必须是「公开」的！）
   // 格式：https://github.com/用户名/仓库名/raw/分支名/文件路径
-  githubJsonUrl: "https://github.com/wangzy1031/Yuanjiansuo/raw/main/data.json",
+  githubJsonUrl: "https://github.com/wangzy1031/Yuanjiansuo/blob/main/data.json",
   // 方案2：本地备用数据（当 GitHub 链接失效时自动启用，避免页面空白）
   localBackupData: [
     {
