@@ -1,68 +1,60 @@
-// 1. 【核心】本地内嵌数据（直接在这里添加/修改软件/工具，无需外部文件）
-// 格式说明：type 只能是 "software"（软件）或 "tool"（工具），确保每个条目都有 name/url/intro
+// 1. 本地数据（直接在这里添加/修改软件/工具，无需外部文件）
 const LOCAL_DATA = [
-  // -------------------------- 软件类（software）--------------------------
+  // 软件类（software）
   {
-    "type": "software",
-    "name": "Google Chrome",
-    "url": "https://www.google.com/chrome/",
-    "intro": "快速、安全的跨平台浏览器，支持多标签页、扩展插件和同步功能"
+    type: "software",
+    name: "Chrome 浏览器",
+    url: "https://www.google.com/chrome/",
+    intro: "安全的跨平台浏览器，支持多标签页、扩展插件和同步功能"
   },
   {
-    "type": "software",
-    "name": "Visual Studio Code",
-    "url": "https://code.visualstudio.com/",
-    "intro": "免费开源的轻量级代码编辑器，支持语法高亮、代码补全和多语言开发"
+    type: "software",
+    name: "VS Code",
+    url: "https://code.visualstudio.com/",
+    intro: "微软出品的免费代码编辑器，支持语法高亮、代码补全和多语言开发"
   },
   {
-    "type": "software",
-    "name": "微信电脑版",
-    "url": "https://pc.weixin.qq.com/",
-    "intro": "微信官方电脑客户端，支持消息同步、文件传输和公众号/小程序访问"
+    type: "software",
+    name: "微信 PC版",
+    url: "https://pc.weixin.qq.com/",
+    intro: "微信官方电脑客户端，支持消息同步、文件传输和公众号/小程序访问"
   },
   {
-    "type": "software",
-    "name": "PotPlayer",
-    "url": "https://potplayer.daum.net/",
-    "intro": "功能强大的视频播放器，支持几乎所有格式，可自定义皮肤和字幕"
+    type: "software",
+    name: "PotPlayer",
+    url: "https://potplayer.daum.net/",
+    intro: "强大的本地视频播放器，可自定义皮肤和字幕"
   },
   {
-    "type": "software",
-    "name": "7-Zip",
-    "url": "https://www.7-zip.org/",
-    "intro": "免费开源的压缩工具，支持 ZIP、RAR 等多种格式，压缩率高"
+    type: "software",
+    name: "WinRAR",
+    url: "https://www.win-rar.com/",
+    intro: "经典压缩解压工具，支持 ZIP、RAR 等多种格式，压缩率高"
   },
-
-  // -------------------------- 工具类（tool）--------------------------
+  // 工具类（tool）
   {
-    "type": "tool",
-    "name": "Canva 可画",
-    "url": "https://www.canva.com/zh_cn/",
-    "intro": "在线设计工具，提供海报、PPT、简历等模板，拖拽操作无需设计基础"
-  },
-  {
-    "type": "tool",
-    "name": "Notion",
-    "url": "https://www.notion.so/zh-cn/",
-    "intro": "多功能协作工具，支持文档、表格、看板管理，可自定义工作流"
+    type: "tool",
+    name: "Canva 可画",
+    url: "https://www.canva.com/zh_cn/",
+    intro: "在线设计工具，提供海报、PPT、简历等模板，拖拽操作无需设计基础"
   },
   {
-    "type": "tool",
-    "name": "TinyPNG",
-    "url": "https://tinypng.com/",
-    "intro": "免费在线图片压缩工具，减少文件体积且保持画质，支持批量处理"
+    type: "tool",
+    name: "Notion",
+    url: "https://www.notion.so/zh-cn/",
+    intro: "多功能笔记与协作平台，支持文档、表格、看板管理，可自定义工作流"
   },
   {
-    "type": "tool",
-    "name": "Markdown Here",
-    "url": "https://markdown-here.com/",
-    "intro": "浏览器插件/邮箱插件，可将 Markdown 格式文本实时渲染为富文本"
+    type: "tool",
+    name: "TinyPNG",
+    url: "https://tinypng.com/",
+    intro: "免费在线图片压缩工具，减少文件体积且保持画质，支持批量处理"
   },
   {
-    "type": "tool",
-    "name": "Figma",
-    "url": "https://www.figma.com/",
-    "intro": "在线 UI 设计工具，支持实时协作、原型制作和矢量图形编辑"
+    type: "tool",
+    name: "Figma",
+    url: "https://www.figma.com/",
+    intro: "在线 UI 设计与协作工具，支持多人实时协作和矢量图形编辑"
   }
 ];
 
@@ -94,6 +86,37 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSearchPlaceholder();
   // 渲染默认分类内容
   renderFilteredData(APP_STATE.currentCategory);
+});
+
+// 手机端菜单展开/收起逻辑
+document.addEventListener("DOMContentLoaded", () => {
+  const sidebar = document.querySelector(".sidebar");
+  const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+  // 仅在手机端显示菜单按钮
+  function checkMobileMenuBtn() {
+    if (window.innerWidth <= 768) {
+      mobileMenuBtn.style.display = "block";
+      sidebar.classList.remove("active");
+    } else {
+      mobileMenuBtn.style.display = "none";
+      sidebar.classList.remove("active");
+    }
+  }
+  checkMobileMenuBtn();
+  window.addEventListener("resize", checkMobileMenuBtn);
+
+  mobileMenuBtn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+  });
+
+  // 点击侧边栏任意按钮后自动收起
+  sidebar.querySelectorAll(".menu-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("active");
+      }
+    });
+  });
 });
 
 // 5. 初始化本地数据（筛选有效条目，无需修改）
