@@ -1,4 +1,4 @@
-// 1. 本地数据（直接在这里添加/修改软件/工具，无需外部文件）
+// 1. 本地数据
 const LOCAL_DATA = [
   // 软件类（software）
   {
@@ -64,42 +64,54 @@ const APP_STATE = {
   allData: [] // 存储筛选后的有效数据
 };
 
-// 3. DOM 元素缓存（无需修改，确保 HTML 中元素 ID/class 匹配）
+// 3. DOM 元素缓存
 const DOM = {
-  categoryBtns: document.querySelectorAll(".menu-btn"), // 分类切换按钮（需有 data-type 属性）
-  searchInput: document.getElementById("search-input"), // 搜索框（ID 必须为 search-input）
-  searchBtn: document.getElementById("search-btn"),     // 搜索按钮（ID 必须为 search-btn）
-  contentArea: document.getElementById("content-area"), // 内容展示区（ID 必须为 content-area）
-  aboutBtn: document.getElementById("about-btn"),       // 关于按钮（ID 必须为 about-btn）
-  aboutPanel: document.getElementById("about-panel")    // 关于面板（ID 必须为 about-panel）
+  categoryBtns: document.querySelectorAll(".menu-btn"),
+  searchInput: document.getElementById("search-input"),
+  searchBtn: document.getElementById("search-btn"),
+  contentArea: document.getElementById("content-area"),
+  aboutBtnTop: document.getElementById("about-btn-top"),
+  aboutPanelTop: document.getElementById("about-panel-top"),
+  aboutBtnSide: document.getElementById("about-btn-side"),
+  aboutPanelSide: document.getElementById("about-panel-side")
 };
 
-// 4. 页面初始化（加载数据+绑定事件，无需修改）
+// 4. 页面初始化
 document.addEventListener("DOMContentLoaded", () => {
-  // 初始化数据（筛选有效条目，避免格式错误）
-  initLocalData();
-  // 绑定所有交互事件
-  bindAllEventListeners();
-  // 激活默认分类按钮
-  activateCategoryBtn(APP_STATE.currentCategory);
-  // 更新搜索框占位符
-  updateSearchPlaceholder();
+  // 初始化数据
+  APP_STATE.allData = LOCAL_DATA;
+  // 默认激活软件下载分类按钮
+  if (DOM.categoryBtns.length > 0) {
+    DOM.categoryBtns[0].classList.add("active");
+    APP_STATE.currentCategory = DOM.categoryBtns[0].dataset.type || "software";
+  }
   // 渲染默认分类内容
   renderFilteredData(APP_STATE.currentCategory);
+  // 绑定交互事件
+  bindAllEventListeners();
 });
 
-// 手机端菜单展开/收起逻辑
+// 手机端菜单展开/收起逻辑（适配顶部栏）
 document.addEventListener("DOMContentLoaded", () => {
   const sidebar = document.querySelector(".sidebar");
   const mobileMenuBtn = document.getElementById("mobile-menu-btn");
-  // 仅在手机端显示菜单按钮
+  const aboutBtnTop = document.getElementById("about-btn-top");
+  const aboutPanelTop = document.getElementById("about-panel-top");
+  const aboutBtnSide = document.getElementById("about-btn-side");
+  const aboutPanelSide = document.getElementById("about-panel-side");
+
+  // 手机端菜单展开/收起
   function checkMobileMenuBtn() {
     if (window.innerWidth <= 768) {
       mobileMenuBtn.style.display = "block";
       sidebar.classList.remove("active");
+      aboutPanelTop.classList.add("hidden");
+      aboutPanelSide.classList.add("hidden");
     } else {
       mobileMenuBtn.style.display = "none";
       sidebar.classList.remove("active");
+      aboutPanelTop.classList.add("hidden");
+      aboutPanelSide.classList.add("hidden");
     }
   }
   checkMobileMenuBtn();
@@ -107,7 +119,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   mobileMenuBtn.addEventListener("click", () => {
     sidebar.classList.toggle("active");
+    aboutPanelTop.classList.add("hidden");
+    aboutPanelSide.classList.add("hidden");
   });
+
+  // 手机端关于按钮弹窗
+  aboutBtnTop.addEventListener("click", () => {
+    aboutPanelTop.classList.toggle("hidden");
+    sidebar.classList.remove("active");
+  });
+
+  if (aboutBtnSide && aboutPanelSide) {
+    aboutBtnSide.addEventListener("click", () => {
+      aboutPanelSide.classList.toggle("hidden");
+    });
+
+    // 点击弹窗外部关闭弹窗（仅电脑端）
+    document.addEventListener("click", (e) => {
+      if (
+        window.innerWidth > 768 &&
+        !aboutPanelSide.classList.contains("hidden") &&
+        !aboutPanelSide.contains(e.target) &&
+        e.target !== aboutBtnSide
+      ) {
+        aboutPanelSide.classList.add("hidden");
+      }
+    });
+  }
 
   // 点击侧边栏任意按钮后自动收起
   sidebar.querySelectorAll(".menu-btn").forEach(btn => {
@@ -119,26 +157,31 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// 5. 初始化本地数据（筛选有效条目，无需修改）
-function initLocalData() {
-  // 过滤无效数据：确保每个条目有 type/name/url/intro，且 type 符合规范
-  APP_STATE.allData = LOCAL_DATA.filter(item => {
-    const hasRequiredFields = !!item.type && !!item.name && !!item.url && !!item.intro;
-    const isValidType = item.type.toLowerCase() === "software" || item.type.toLowerCase() === "tool";
-    // 无效数据打印警告（便于排查）
-    if (!hasRequiredFields || !isValidType) {
-      console.warn("跳过无效数据（缺少字段或类型错误）：", item);
-    }
-    return hasRequiredFields && isValidType;
+// 5. 渲染指定分类内容
+function renderFilteredData(category) {
+  const filteredData = APP_STATE.allData.filter(item =>
+    item.type.toLowerCase() === category.toLowerCase()
+  );
+  if (filteredData.length === 0) {
+    DOM.contentArea.innerHTML = `<div class="no-result">当前分类暂无内容</div>`;
+    return;
+  }
+  let cardHtml = "";
+  filteredData.forEach(item => {
+    cardHtml += `
+      <div class="item-card">
+        <h3>${item.name}</h3>
+        <p class="intro">${item.intro}</p>
+        <a href="${item.url}" target="_blank" class="link-btn">前往官网</a>
+      </div>
+    `;
   });
-
-  // 提示数据加载结果
-  console.log(`✅ 本地数据初始化完成，共加载 ${APP_STATE.allData.length} 条有效内容`);
+  DOM.contentArea.innerHTML = cardHtml;
 }
 
 // 6. 绑定所有交互事件（分类/搜索/关于面板，无需修改）
 function bindAllEventListeners() {
-  // 6.1 分类切换事件
+  // 分类切换事件
   DOM.categoryBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       const targetCategory = btn.dataset.type;
@@ -149,19 +192,34 @@ function bindAllEventListeners() {
       APP_STATE.currentCategory = targetCategory;
       activateCategoryBtn(targetCategory);
       DOM.searchInput.value = ""; // 清空搜索框
+      if (DOM.searchInputMobile) DOM.searchInputMobile.value = "";
       updateSearchPlaceholder();
       renderFilteredData(targetCategory); // 渲染目标分类内容
     });
   });
 
-  // 6.2 搜索按钮点击事件
+  // 搜索按钮点击事件（PC端）
   DOM.searchBtn.addEventListener("click", () => {
     const keyword = DOM.searchInput.value.trim();
     // 有关键词则搜索，无关键词则显示全部分类内容
     keyword ? searchData(keyword) : renderFilteredData(APP_STATE.currentCategory);
   });
 
-  // 6.3 回车键触发搜索
+  // 搜索按钮点击事件（手机端）
+  if (DOM.searchBtnMobile && DOM.searchInputMobile) {
+    DOM.searchBtnMobile.addEventListener("click", () => {
+      const keyword = DOM.searchInputMobile.value.trim();
+      // 有关键词则搜索，无关键词则显示全部分类内容
+      keyword ? searchData(keyword) : renderFilteredData(APP_STATE.currentCategory);
+    });
+    DOM.searchInputMobile.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.keyCode === 13) {
+        DOM.searchBtnMobile.click();
+      }
+    });
+  }
+
+  // 回车键触发搜索（PC端）
   DOM.searchInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.keyCode === 13) {
       DOM.searchBtn.click();
@@ -174,28 +232,7 @@ function bindAllEventListeners() {
   });
 }
 
-// 7. 渲染指定分类的内容（无需修改）
-function renderFilteredData(category) {
-  // 筛选当前分类的内容（不区分大小写，兼容输入错误）
-  const filteredData = APP_STATE.allData.filter(item => 
-    item.type.toLowerCase() === category.toLowerCase()
-  );
-
-  // 无数据时显示提示
-  if (filteredData.length === 0) {
-    DOM.contentArea.innerHTML = `
-      <div class="no-result" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #6c757d; font-size: 16px;">
-        当前「${category === "software" ? "软件" : "工具"}」分类暂无内容
-      </div>
-    `;
-    return;
-  }
-
-  // 有数据则渲染卡片
-  renderContentCards(filteredData);
-}
-
-// 8. 搜索功能（匹配名称/简介，支持关键词高亮，无需修改）
+// 7. 搜索功能（匹配名称/简介，支持关键词高亮，无需修改）
 function searchData(keyword) {
   // 双重筛选：先匹配分类，再匹配关键词（不区分大小写）
   const searchResult = APP_STATE.allData.filter(item => {
@@ -220,7 +257,7 @@ function searchData(keyword) {
   renderContentCards(searchResult);
 }
 
-// 9. 渲染内容卡片（样式与交互，无需修改）
+// 8. 渲染内容卡片（样式与交互，无需修改）
 function renderContentCards(items) {
   let cardHtml = "";
 
@@ -254,7 +291,7 @@ function renderContentCards(items) {
   DOM.contentArea.innerHTML = cardHtml;
 }
 
-// 10. 辅助函数：关键词高亮（搜索结果标绿，无需修改）
+// 9. 辅助函数：关键词高亮（搜索结果标绿，无需修改）
 function highlightKeyword(text, keyword) {
   if (!keyword) return text;
   // 正则匹配关键词（不区分大小写）
@@ -263,21 +300,18 @@ function highlightKeyword(text, keyword) {
   return text.replace(regex, '<span style="color: #2e7d32; font-weight: 600;">$1</span>');
 }
 
-// 11. 辅助函数：激活分类按钮（添加 active 样式，无需修改）
+// 10. 辅助函数：激活分类按钮（添加 active 样式，无需修改）
 function activateCategoryBtn(category) {
   DOM.categoryBtns.forEach(btn => {
     if (btn.dataset.type === category) {
       btn.classList.add("active");
-      // 可在此处添加 active 样式（若 CSS 中未定义）
-      btn.style.cssText = "background: #2abb90ff; color: white;";
     } else {
       btn.classList.remove("active");
-      btn.style.cssText = "background: #e2e8f0; color: #2d3748;";
     }
   });
 }
 
-// 12. 辅助函数：更新搜索框占位符（根据分类切换，无需修改）
+// 11. 辅助函数：更新搜索框占位符（根据分类切换，无需修改）
 function updateSearchPlaceholder() {
   DOM.searchInput.placeholder = APP_STATE.currentCategory === "software"
     ? "搜索软件（如：Chrome、VS Code）..."
