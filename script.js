@@ -31,6 +31,24 @@ const LOCAL_DATA = [
     url: "https://www.win-rar.com/",
     intro: "经典压缩解压工具，支持 ZIP、RAR 等多种格式，压缩率高"
   },
+  {
+    type: "software",
+    name: "Office2021",
+    url: "https://consumer-tkbdownload.huawei.com/ctkbfm/servlet/download/downloadServlet/H4sIAAAAAAAAAD2Qy0rDQBiF32XWVf65ZSauzJW6URf1AXK1AzUtaaIYcVmwKAjiUnBRkC5sly6y8WmG-BhOJLg5cPgP5_84d6heZuXkdpGhI4TRCKXzm2Kw1NhczbLT6Kq3Z3mukowAwXr_pdudfnnSu4_u9b1bP-jVZ69v26791vv1z2bVbR91-3zYqMXQch5VU9MScyA5pxALTJmV88gSVhyDTJOEcZFzk45Vc5Ka6Ng5bqYHSQFgSckYM6ekzKJKzYuJ6pGwBTajwAADwAgt1WURVXXZwwrJbOoFRi2HcMo9HzPuCu4SzImUGMuQOFw4numlfijtAPteGAAObCw8V5hf19FMpRf_61Rlnf2xDeuMHXT_C59MHf0-AQAA.zip",
+    intro: "微软office办公套件，包含Word、Excel、PowerPoint等常用软件，注意：为下载链接"
+  },
+  {
+    type: "software",
+    name: "Office2019",
+    url: "https://consumer-tkbdownload.huawei.com/ctkbfm/servlet/download/downloadServlet/H4sIAAAAAAAAAD2QwUrDQBiE32XPVf7N7mZ3PZmmCfWiHuoDbJKNXahpSVPFiseCRUEQj4KHgvRge_SQi0-zxMdwI8HLD8M_zHzMHVrMdTm6nWl0hDDqoWx6U3SSOJmbiT5VV608y3OTag-wtPsvW-_sy5PdfTSv7836wa4-2_u2bepvu1__bFbN9tHWz4dLM-tSzlU1dimJUgKnvs-IJlRIKjzKRKKlzmRCM_CcOzHLk8xZh8HxcnyQFgC-EJRS90pLrSozLUamRcI-SEqAAgaAHpqby0JVi7KFZTSGAWcRx4LgkIdB6OHQ40HMOQZGMcRRFA0w44zEYSSl7A-8mEsf-hD3CQlc17WamOzif52qXOg_tm6dYYDufwGJh0WcPgEAAA%3D%3D.zip",
+    intro: "微软office办公套件，包含Word、Excel、PowerPoint等常用软件，注意：为下载链接"
+  },
+  {
+    type: "software",
+    name: "Office2016",
+    url: "https://consumer-tkbdownload.huawei.com/ctkbfm/servlet/download/downloadServlet/H4sIAAAAAAAAAD2QzUrDQBSF32XWVe7MnZnOuDJpU-pGXdQHyM_UDtS0pIlixGXBoiCIS8GFIF3YLl1k49MM8TFMSnFz4XAP53ycO1IsTDa6nRtyRCjpkGR2k-4lNnJsp-Y0vGrl2XhsY8OASrf9dtXGvTy5zWf9-l6vHtzyq71v67r6cdvV78eyXj-66vmwtPN9ynmYT5oUmWAku4yBpoLLbqhi5EnEmTHcRILzxh3Z8iRprEPvuJwcxCmAVIrvXnFmwtzO0pFtkagEzRE4UADokIW9TMO8yFpY5vcDSqnwUarBALHPODLUPcUCxqQPFD3OFTKFqLXo-RKkDjQXQgYgfN9ruq7DqU0u_tfJs8Ls2PbrDD1y_wemyLu7PgEAAA%3D%3D.zip",
+    intro: "微软office办公套件，包含Word、Excel、PowerPoint等常用软件，注意：为下载链接"
+  },
   // 工具类（tool）
   {
     type: "tool",
